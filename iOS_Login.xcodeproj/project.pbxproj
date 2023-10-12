@@ -147,6 +147,7 @@
 			files = (
 				300266D22AD79457008FF1AF /* Extensions.swift in Sources */,
 				300266BB2AD6F158008FF1AF /* MainViewController.swift in Sources */,
+				300266D02AD722F3008FF1AF /* SinusoidalView.swift in Sources */,
 				300266B72AD6F158008FF1AF /* AppDelegate.swift in Sources */,
 				300266B92AD6F158008FF1AF /* SceneDelegate.swift in Sources */,
 			);
