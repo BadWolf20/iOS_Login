@@ -17,6 +17,7 @@
 		300266D02AD722F3008FF1AF /* SinusoidalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 300266CF2AD722F3008FF1AF /* SinusoidalView.swift */; };
 		300266D22AD79457008FF1AF /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 300266D12AD79457008FF1AF /* Extensions.swift */; };
 		300266D42AD8572E008FF1AF /* SocialLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 300266D32AD8572E008FF1AF /* SocialLoginView.swift */; };
+		300266D82AD90AD0008FF1AF /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 300266D72AD90AD0008FF1AF /* NotificationManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		300266CF2AD722F3008FF1AF /* SinusoidalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SinusoidalView.swift; sourceTree = "<group>"; };
 		300266D12AD79457008FF1AF /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		300266D32AD8572E008FF1AF /* SocialLoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialLoginView.swift; sourceTree = "<group>"; };
+		300266D72AD90AD0008FF1AF /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +75,7 @@
 				300266C42AD6F159008FF1AF /* Info.plist */,
 				300266D12AD79457008FF1AF /* Extensions.swift */,
 				300266D32AD8572E008FF1AF /* SocialLoginView.swift */,
+				300266D72AD90AD0008FF1AF /* NotificationManager.swift */,
 			);
 			path = iOS_Login;
 			sourceTree = "<group>";
@@ -159,6 +162,7 @@
 				300266D02AD722F3008FF1AF /* SinusoidalView.swift in Sources */,
 				300266D42AD8572E008FF1AF /* SocialLoginView.swift in Sources */,
 				300266B72AD6F158008FF1AF /* AppDelegate.swift in Sources */,
+				300266D82AD90AD0008FF1AF /* NotificationManager.swift in Sources */,
 				300266B92AD6F158008FF1AF /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
