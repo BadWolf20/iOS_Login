@@ -14,31 +14,37 @@ class MainViewController: UIViewController {
     private lazy var loginLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 24)
-        label.textColor = safeResource(UIColor(named: "TextField"))
+        label.textColor = safeResource(UIColor(named: "Title"))
 
         return label
     }()
 
     private lazy var emailTextField: UITextField = {
         let textField = UITextField()
-        textField.placeholder = "Email"
+
+        // Настройка основных свойств
+        textField.backgroundColor = safeResource(UIColor(named: "TextField"))
+        textField.textColor = .black
+        textField.clipsToBounds = true
         textField.layer.borderWidth = 1.0
         textField.layer.borderColor = UIColor.gray.cgColor
-        textField.clipsToBounds = true
-        textField.backgroundColor = safeResource(UIColor(named: "TextField"))
 
+        // Настройка placeholder
+        textField.attributedPlaceholder = NSAttributedString(string: " ", attributes: [
+            .foregroundColor: safeResource(UIColor(named: "GrayAcent")?.withAlphaComponent(0.5)),
+        ])
+
+        // Настройка иконок
         textField.setIcon(image: safeResource(
             UIImage(
-                systemName: "person")?.withTintColor(
-                    safeResource(UIColor(named: "GrayAcent")),
-                    renderingMode: .alwaysOriginal)),
+                systemName: "person")?
+                .withTintColor(safeResource(UIColor(named: "GrayAcent")), renderingMode: .alwaysOriginal)),
                           side: .left)
 
         textField.setIcon(image: safeResource(
             UIImage(
-                systemName: "checkmark.circle.fill")?.withTintColor(
-                    .green,
-                    renderingMode: .alwaysOriginal)),
+                systemName: "checkmark.circle.fill")?
+                .withTintColor(.green, renderingMode: .alwaysOriginal)),
                           side: .right)
 
         textField.rightViewMode = .never
@@ -47,21 +53,29 @@ class MainViewController: UIViewController {
 
     private lazy var passwordTextField: UITextField = {
         let textField = UITextField()
-        textField.placeholder = "Password"
+
+        // Настройка основных свойств
         textField.isSecureTextEntry = true
+        textField.backgroundColor = safeResource(UIColor(named: "TextField"))
+        textField.textColor = .black
+        textField.isSecureTextEntry = true
+        textField.clipsToBounds = true
         textField.layer.borderWidth = 1.0
         textField.layer.borderColor = UIColor.gray.cgColor
-        textField.clipsToBounds = true
-        textField.backgroundColor = UIColor(named: "TextField")
+
+        // Настройка placeholder
+        textField.attributedPlaceholder = NSAttributedString(string: " ", attributes: [
+            .foregroundColor: safeResource(UIColor(named: "GrayAcent")?.withAlphaComponent(0.5)),
+        ])
+
+        // Настройка иконок
         textField.setIcon(image: safeResource(
             UIImage(
-                systemName: "lock")?.withTintColor(
-                    safeResource(UIColor(named: "GrayAcent")),
-                    renderingMode: .alwaysOriginal)),
+                systemName: "lock")?
+                .withTintColor(safeResource(UIColor(named: "GrayAcent")), renderingMode: .alwaysOriginal)),
                           side: .left)
 
         return textField
-
     }()
 
     private lazy var inputStackView: UIStackView = {
@@ -123,14 +137,14 @@ class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         emailTextField.layer.cornerRadius = emailTextField.frame.height / 2
-        passwordTextField.layer.cornerRadius = emailTextField.frame.height / 2
+        passwordTextField.layer.cornerRadius = passwordTextField.frame.height / 2
         loginButton.layer.cornerRadius = loginButton.frame.height / 2
+    }
 
     }
 
@@ -172,39 +186,47 @@ class MainViewController: UIViewController {
 
     private func setupText() {
         loginLabel.text = "Login"
-
         loginButton.setTitle("Login", for: .normal)
         forgotPasswordButton.setTitle("Forgot your password?", for: .normal)
     }
 
     private func setupConstraints() {
-        loginLabel.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(50)
+        emailTextField.snp.remakeConstraints { make in
+            make.height.equalTo(40)
+        }
+
+        passwordTextField.snp.remakeConstraints { make in
+            make.height.equalTo(emailTextField)
+        }
+
         loginButton.snp.remakeConstraints { make in
             make.height.equalTo(emailTextField)
         }
+
+
+        loginLabel.snp.remakeConstraints { make in
             make.centerX.equalTo(view)
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(forOrientation(portrait: 100, landscape: 0))
         }
 
-        inputStackView.snp.makeConstraints { make in
-            make.top.equalTo(loginLabel.snp.bottom).offset(30)
-            make.left.right.equalTo(view).inset(UIEdgeInsets(top: 0, left: 80, bottom: 0, right: 80))
+
+        inputStackView.snp.remakeConstraints { make in
+            make.top.equalTo(loginLabel.snp.bottom).offset(forOrientation(portrait: 60, landscape: 20))
+
+            make.left.right.equalTo(view).inset(forOrientation(portrait: 60, landscape: 150))
         }
-        
-        emailTextField.snp.makeConstraints { make in
-            make.height.equalTo(40)
+
         buttonStackView.snp.remakeConstraints { make in
             make.top.equalTo(inputStackView.snp.bottom).offset(forOrientation(portrait: 45, landscape: 5))
             make.left.right.equalTo(inputStackView)
         }
-        passwordTextField.snp.makeConstraints { make in
-            make.height.equalTo(40)
         }
 
 
     func forOrientation(portrait: CGFloat, landscape: CGFloat) -> CGFloat {
         return UIDevice.current.orientation.isPortrait ? portrait : landscape
     }
+
     // MARK: - Update
     // MARK: - Actions
     @objc private func dismissKeyboard() {
@@ -213,5 +235,15 @@ class MainViewController: UIViewController {
 
     // MARK: - Functions
 
+    // MARK: - Functions
+    /// Проверяет, является ли данная строка действительным адресом электронной почты.
+    ///
+    /// - Parameter email: Строка для проверки.
+    /// - Returns: `true` если строка соответствует формату электронной почты, иначе `false`.
+    func isValidEmail(_ email: String) -> Bool {
+        let emailFormat = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
+        let emailPredicate = NSPredicate(format:"SELF MATCHES %@", emailFormat)
+        return emailPredicate.evaluate(with: email)
+    }
 }
 
