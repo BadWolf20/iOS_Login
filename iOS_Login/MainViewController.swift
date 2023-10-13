@@ -134,6 +134,35 @@ class MainViewController: UIViewController {
 
     private lazy var socialLoginView = SocialLoginView()
 
+    private lazy var signUpLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 14)
+        label.textColor = safeResource(UIColor(named: "GrayAcent"))
+
+        label.textAlignment = .right
+        return label
+    }()
+
+    private lazy var signUpButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Sign up", for: .normal)
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
+        button.setTitleColor(safeResource(UIColor(named: "LoginButton")), for: .normal)
+        button.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
+        button.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
+
+        return button
+    }()
+
+    private lazy var signUpStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [signUpLabel, signUpButton])
+        stackView.axis = .horizontal
+        stackView.spacing = 10
+        stackView.alignment = .center
+        return stackView
+    }()
+
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
@@ -147,6 +176,8 @@ class MainViewController: UIViewController {
     }
 
     }
+
+
 
     // MARK: - Setup
 
@@ -164,6 +195,8 @@ class MainViewController: UIViewController {
         view.addSubview(loginLabel)
         view.addSubview(inputStackView)
         view.addSubview(buttonStackView)
+        view.addSubview(socialLoginView)
+        view.addSubview(signUpStackView)
 
         view.addSubview(sinBackground)
         view.sendSubviewToBack(sinBackground)
@@ -188,6 +221,7 @@ class MainViewController: UIViewController {
         loginLabel.text = "Login"
         loginButton.setTitle("Login", for: .normal)
         forgotPasswordButton.setTitle("Forgot your password?", for: .normal)
+        signUpLabel.text = "Don't have an account?"
     }
 
     private func setupConstraints() {
@@ -220,8 +254,19 @@ class MainViewController: UIViewController {
             make.top.equalTo(inputStackView.snp.bottom).offset(forOrientation(portrait: 45, landscape: 5))
             make.left.right.equalTo(inputStackView)
         }
+
+
+        socialLoginView.snp.remakeConstraints { make in
+            make.left.right.equalTo(inputStackView)
+            make.bottom.equalTo(signUpStackView.snp.top).offset(forOrientation(portrait: -30, landscape: 0))
         }
 
+        signUpStackView.snp.remakeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).inset(forOrientation(portrait: 30, landscape: 0))
+        }
+
+    }
 
     func forOrientation(portrait: CGFloat, landscape: CGFloat) -> CGFloat {
         return UIDevice.current.orientation.isPortrait ? portrait : landscape
