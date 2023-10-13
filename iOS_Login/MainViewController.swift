@@ -10,7 +10,13 @@ import SnapKit
 
 class MainViewController: UIViewController {
     // MARK: - Properties
+
+
+
     // MARK: - Components
+
+    private lazy var socialLoginView = SocialLoginView()
+
     private lazy var loginLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 24)
@@ -82,21 +88,7 @@ class MainViewController: UIViewController {
         return textField
     }()
 
-    private lazy var inputStackView: UIStackView = {
-        let stackView = UIStackView()
 
-        stackView.axis = .vertical
-        stackView.spacing = 10
-        return stackView
-    }()
-
-    private lazy var buttonStackView: UIStackView = {
-        let stackView = UIStackView()
-
-        stackView.axis = .vertical
-        stackView.spacing = 10
-        return stackView
-    }()
 
     private lazy var sinBackground: SinusoidalView = {
         let sinusoidal = SinusoidalView()
@@ -104,27 +96,34 @@ class MainViewController: UIViewController {
         sinusoidal.gradientColors = [UIColor.blue.cgColor, UIColor.systemPink.cgColor]
         sinusoidal.frame = view.bounds
         sinusoidal.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+
         return sinusoidal
     }()
 
     private lazy var sinBackgroundBack: SinusoidalView = {
         let sinusoidal = SinusoidalView()
 
-        sinusoidal.amplitude = 20
-        sinusoidal.phase = 0.5
-        sinusoidal.isVerticalGradient = false
         sinusoidal.gradientColors = [UIColor.red.cgColor, UIColor.cyan.cgColor]
         sinusoidal.frame = view.bounds
         sinusoidal.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+
+        sinusoidal.amplitude = 20
+        sinusoidal.phase = 0.5
+        sinusoidal.isVerticalGradient = false
+
         return sinusoidal
     }()
 
     private lazy var loginButton: UIButton = {
         let button = UIButton(type: .system)
-        button.clipsToBounds = true
+
+        // Настройка основных свойств
         button.backgroundColor = safeResource(UIColor(named: "LoginButton"))
         button.setTitleColor(safeResource(UIColor(named: "Title")), for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
+        button.clipsToBounds = true
+
+        // Добавление события
         button.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
 
         return button
@@ -132,32 +131,53 @@ class MainViewController: UIViewController {
 
     private lazy var forgotPasswordButton: UIButton = {
         let button = UIButton(type: .system)
+
+        // Настройка основных свойств
         button.setTitleColor(safeResource(UIColor(named: "Title")), for: .normal)
+
+        // Добавление события
         button.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
 
         return button
     }()
 
-    private lazy var socialLoginView = SocialLoginView()
 
     private lazy var signUpLabel: UILabel = {
         let label = UILabel()
+
         label.font = UIFont.systemFont(ofSize: 14)
         label.textColor = safeResource(UIColor(named: "GrayAcent"))
-
         label.textAlignment = .right
+
         return label
     }()
 
     private lazy var signUpButton: UIButton = {
         let button = UIButton(type: .system)
+
+        // Настройка основных свойств
         button.setTitle("Sign up", for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
         button.setTitleColor(safeResource(UIColor(named: "LoginButton")), for: .normal)
-        button.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
+
+        // Добавление события
         button.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
 
         return button
+    }()
+
+    private lazy var inputStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.spacing = 10
+        return stackView
+    }()
+
+    private lazy var buttonStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.spacing = 10
+        return stackView
     }()
 
     private lazy var signUpStackView: UIStackView = {
@@ -176,6 +196,8 @@ class MainViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+
+        // Установка закруглений
         emailTextField.layer.cornerRadius = emailTextField.frame.height / 2
         passwordTextField.layer.cornerRadius = passwordTextField.frame.height / 2
         loginButton.layer.cornerRadius = loginButton.frame.height / 2
@@ -190,10 +212,7 @@ class MainViewController: UIViewController {
         }, completion: nil)
     }
 
-
-
     // MARK: - Setup
-
     private func setupUI() {
         view.backgroundColor = .white
 
@@ -201,7 +220,6 @@ class MainViewController: UIViewController {
         setupConstraints()
         setupComponents()
         setupText()
-
     }
 
     private func setupHierarchy() {
@@ -252,16 +270,13 @@ class MainViewController: UIViewController {
             make.height.equalTo(emailTextField)
         }
 
-
         loginLabel.snp.remakeConstraints { make in
             make.centerX.equalTo(view)
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(forOrientation(portrait: 100, landscape: 0))
         }
 
-
         inputStackView.snp.remakeConstraints { make in
             make.top.equalTo(loginLabel.snp.bottom).offset(forOrientation(portrait: 60, landscape: 20))
-
             make.left.right.equalTo(view).inset(forOrientation(portrait: 60, landscape: 150))
         }
 
@@ -269,7 +284,6 @@ class MainViewController: UIViewController {
             make.top.equalTo(inputStackView.snp.bottom).offset(forOrientation(portrait: 45, landscape: 5))
             make.left.right.equalTo(inputStackView)
         }
-
 
         socialLoginView.snp.remakeConstraints { make in
             make.left.right.equalTo(inputStackView)
@@ -280,14 +294,12 @@ class MainViewController: UIViewController {
             make.centerX.equalToSuperview()
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).inset(forOrientation(portrait: 30, landscape: 0))
         }
-
     }
 
     func forOrientation(portrait: CGFloat, landscape: CGFloat) -> CGFloat {
         return UIDevice.current.orientation.isPortrait ? portrait : landscape
     }
 
-    // MARK: - Update
     // MARK: - Actions
     @objc private func dismissKeyboard() {
         view.endEditing(true)
@@ -306,7 +318,6 @@ class MainViewController: UIViewController {
             NotificationManager.shared.sendNotification(withTitle: "Кнопка '\(buttonTitle)' была нажата!")
             }
     }
-
 
     // MARK: - Functions
     /// Проверяет, является ли данная строка действительным адресом электронной почты.

@@ -12,7 +12,8 @@ class SocialLoginView: UIView {
     // MARK: - Components
     private lazy var connectLabel: UILabel = {
         let label = UILabel()
-        label.text = "or Connect with"
+
+        // Настройка основных свойств
         label.font = UIFont.systemFont(ofSize: 14)
         label.textColor = safeResource(UIColor(named: "GrayAcent"))
 
@@ -22,11 +23,14 @@ class SocialLoginView: UIView {
 
     private lazy var twitterButton: UIButton = {
         let button = UIButton(type: .system)
+
+        // Настройка основных свойств
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 14)
         button.backgroundColor = safeResource(UIColor(named: "Twitter"))
         button.layer.cornerRadius = 35 / 2
-        button.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
+
+        // Добавление события
         button.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
 
         return button
@@ -34,10 +38,14 @@ class SocialLoginView: UIView {
 
     private lazy var facebookButton: UIButton = {
         let button = UIButton(type: .system)
+
+        // Настройка основных свойств
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 14)
         button.backgroundColor = safeResource(UIColor(named: "Facebook"))
         button.layer.cornerRadius = 35 / 2
+
+        // Добавление события
         button.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
 
         return button
@@ -60,6 +68,7 @@ class SocialLoginView: UIView {
 
         stackView.axis = .horizontal
         stackView.spacing = 10
+
         return stackView
     }()
 
@@ -80,7 +89,6 @@ class SocialLoginView: UIView {
         setupConstraints()
         setupComponents()
         setupText()
-
     }
 
     private func setupHierarchy() {
@@ -91,7 +99,6 @@ class SocialLoginView: UIView {
 
         buttonStackView.addArrangedSubview(facebookButton)
         buttonStackView.addArrangedSubview(twitterButton)
-
     }
 
     private func setupComponents() {
@@ -102,7 +109,6 @@ class SocialLoginView: UIView {
         connectLabel.text = "or connect with"
         twitterButton.setTitle("Twitter", for: .normal)
         facebookButton.setTitle("Facebook", for: .normal)
-
     }
 
     private func setupConstraints() {
