@@ -48,6 +48,10 @@ class MainViewController: UIViewController {
                           side: .right)
 
         textField.rightViewMode = .never
+
+        // Добавление события
+        textField.addTarget(self, action: #selector(emailTextFieldChanged(_:)), for: .editingChanged)
+
         return textField
     }()
 
@@ -121,6 +125,7 @@ class MainViewController: UIViewController {
         button.backgroundColor = safeResource(UIColor(named: "LoginButton"))
         button.setTitleColor(safeResource(UIColor(named: "Title")), for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
+        button.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
 
         return button
     }()
@@ -128,6 +133,7 @@ class MainViewController: UIViewController {
     private lazy var forgotPasswordButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitleColor(safeResource(UIColor(named: "Title")), for: .normal)
+        button.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
 
         return button
     }()
@@ -279,6 +285,20 @@ class MainViewController: UIViewController {
     }
 
     // MARK: - Functions
+    @objc func emailTextFieldChanged(_ textField: UITextField) {
+        if let emailText = textField.text, isValidEmail(emailText) {
+            textField.rightViewMode = .always
+        } else {
+            textField.rightViewMode = .never
+        }
+    }
+
+    @objc func buttonTapped(_ sender: UIButton) {
+        if let buttonTitle = sender.currentTitle {
+            NotificationManager.shared.sendNotification(withTitle: "Кнопка '\(buttonTitle)' была нажата!")
+            }
+    }
+
 
     // MARK: - Functions
     /// Проверяет, является ли данная строка действительным адресом электронной почты.
