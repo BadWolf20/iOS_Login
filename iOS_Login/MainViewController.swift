@@ -181,6 +181,13 @@ class MainViewController: UIViewController {
         loginButton.layer.cornerRadius = loginButton.frame.height / 2
     }
 
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+
+        coordinator.animate(alongsideTransition: { _ in
+            self.setupConstraints()
+            self.view.layoutIfNeeded()
+        }, completion: nil)
     }
 
 
@@ -228,6 +235,8 @@ class MainViewController: UIViewController {
         loginButton.setTitle("Login", for: .normal)
         forgotPasswordButton.setTitle("Forgot your password?", for: .normal)
         signUpLabel.text = "Don't have an account?"
+        emailTextField.placeholder = "Email"
+        passwordTextField.placeholder = "Password"
     }
 
     private func setupConstraints() {
@@ -284,7 +293,6 @@ class MainViewController: UIViewController {
         view.endEditing(true)
     }
 
-    // MARK: - Functions
     @objc func emailTextFieldChanged(_ textField: UITextField) {
         if let emailText = textField.text, isValidEmail(emailText) {
             textField.rightViewMode = .always
