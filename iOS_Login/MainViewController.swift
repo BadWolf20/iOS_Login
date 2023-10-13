@@ -72,6 +72,14 @@ class MainViewController: UIViewController {
         return stackView
     }()
 
+    private lazy var buttonStackView: UIStackView = {
+        let stackView = UIStackView()
+
+        stackView.axis = .vertical
+        stackView.spacing = 10
+        return stackView
+    }()
+
     private lazy var sinBackground: SinusoidalView = {
         let sinusoidal = SinusoidalView()
 
@@ -93,7 +101,24 @@ class MainViewController: UIViewController {
         return sinusoidal
     }()
 
-    // MARK: - Lifecycle
+    private lazy var loginButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.clipsToBounds = true
+        button.backgroundColor = safeResource(UIColor(named: "LoginButton"))
+        button.setTitleColor(safeResource(UIColor(named: "Title")), for: .normal)
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
+
+        return button
+    }()
+
+    private lazy var forgotPasswordButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitleColor(safeResource(UIColor(named: "Title")), for: .normal)
+
+        return button
+    }()
+
+    private lazy var socialLoginView = SocialLoginView()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -105,6 +130,7 @@ class MainViewController: UIViewController {
         super.viewDidAppear(animated)
         emailTextField.layer.cornerRadius = emailTextField.frame.height / 2
         passwordTextField.layer.cornerRadius = emailTextField.frame.height / 2
+        loginButton.layer.cornerRadius = loginButton.frame.height / 2
 
     }
 
@@ -123,6 +149,7 @@ class MainViewController: UIViewController {
     private func setupHierarchy() {
         view.addSubview(loginLabel)
         view.addSubview(inputStackView)
+        view.addSubview(buttonStackView)
 
         view.addSubview(sinBackground)
         view.sendSubviewToBack(sinBackground)
@@ -132,6 +159,9 @@ class MainViewController: UIViewController {
 
         inputStackView.addArrangedSubview(emailTextField)
         inputStackView.addArrangedSubview(passwordTextField)
+
+        buttonStackView.addArrangedSubview(loginButton)
+        buttonStackView.addArrangedSubview(forgotPasswordButton)
     }
 
     private func setupComponents() {
@@ -143,11 +173,16 @@ class MainViewController: UIViewController {
     private func setupText() {
         loginLabel.text = "Login"
 
+        loginButton.setTitle("Login", for: .normal)
+        forgotPasswordButton.setTitle("Forgot your password?", for: .normal)
     }
 
     private func setupConstraints() {
         loginLabel.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(50)
+        loginButton.snp.remakeConstraints { make in
+            make.height.equalTo(emailTextField)
+        }
             make.centerX.equalTo(view)
         }
 
@@ -158,12 +193,17 @@ class MainViewController: UIViewController {
         
         emailTextField.snp.makeConstraints { make in
             make.height.equalTo(40)
+        buttonStackView.snp.remakeConstraints { make in
+            make.top.equalTo(inputStackView.snp.bottom).offset(forOrientation(portrait: 45, landscape: 5))
+            make.left.right.equalTo(inputStackView)
         }
         passwordTextField.snp.makeConstraints { make in
             make.height.equalTo(40)
         }
 
 
+    func forOrientation(portrait: CGFloat, landscape: CGFloat) -> CGFloat {
+        return UIDevice.current.orientation.isPortrait ? portrait : landscape
     }
     // MARK: - Update
     // MARK: - Actions
