@@ -10,7 +10,7 @@ import UIKit
 /// `SinusoidalView` представляет собой пользовательский `UIView`, который отображает градиент
 /// с формой, напоминающей синусоиду
 class SinusoidalView: UIView {
-
+    // MARK: - Properties
     // Амплитуда синусоидальной волны.
     var amplitude: CGFloat = 25
 
@@ -44,6 +44,8 @@ class SinusoidalView: UIView {
 
     // MARK: - Setup
     private func setupGradientLayer() {
+        gradientLayer?.removeFromSuperlayer()
+
         gradientLayer = CAGradientLayer()
         gradientLayer.colors = gradientColors
         if isVerticalGradient {
@@ -77,10 +79,11 @@ class SinusoidalView: UIView {
         for x in stride(from: CGFloat(0), to: width + 1, by: 1) {
             let y: CGFloat = amplitude * sin((2 * .pi * x / width) + phase) + startingHeight
             path.addLine(to: CGPoint(x: x, y: y))
-        }
 
+        }
         path.addLine(to: CGPoint(x: width, y: 0))
         path.addLine(to: CGPoint(x: 0, y: 0))
+
         path.close()
 
         return path
